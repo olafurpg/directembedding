@@ -16,7 +16,7 @@ package object linearalgebra {
     def __ifThenElse[T](cond: Boolean, e1: T, e2: T): T = ???
 
     @reifyAs(NewVar)
-    def __newVar(v: String): String = ???
+    def __newVar(v: Matrix): String = ???
   }
 
   def eval(ast: MatrixExpr): Matrix = {
