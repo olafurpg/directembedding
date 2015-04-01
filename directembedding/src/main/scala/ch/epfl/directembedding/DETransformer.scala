@@ -22,6 +22,8 @@ object DETransformer {
       val virtualizationConfig: String = _virtualizationConfig
       val dslName: String = _dslName
       val dslEndpointMethod: String = _dslEndpointMethod
+      // TODO: Make parameter
+      val logLevel: Int = 3
     }
   }
 }
@@ -69,6 +71,7 @@ abstract class DETransformer[C <: blackbox.Context, T](val c: C)
         (x => c.untypecheck(x)) andThen
         PostProcess)(tree)
     }
+    logTree(transformed, -1)
 
     c.Expr[T](transformed)
   }

@@ -9,7 +9,7 @@ import scala.reflect.macros.blackbox.Context
 package object linearalgebra {
   def la[T](block: T): T = macro implementations.liftRep[T]
 
-  implicit def liftConstant[T](x: T): Exp[T] = Const(x)
+  implicit def liftConstant[T](x: T): Const[T] = Const(x)
 
   object ConfigurationExample {
     @reifyAs(IF)
@@ -19,9 +19,8 @@ package object linearalgebra {
     def __newVar(v: String): String = ???
   }
 
-  def compile[T](ast: Exp[T])(implicit collector: Collector): T = {
-    collector.add[T](ast)
-    ???
+  def eval(ast: MatrixExpr): Matrix = {
+    ast.eval
   }
 
   object implementations {
@@ -31,7 +30,7 @@ package object linearalgebra {
         "example.dsl",
         s"$config.liftConstant",
         s"$config.ConfigurationExample",
-        s"$config.compile",
+        s"$config.eval",
         None,
         None)(block)
     }

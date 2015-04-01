@@ -9,7 +9,9 @@ trait ReifyAsEmbedding extends DirectEmbeddingModule with DirectEmbeddingUtils {
 
   object ReifyAsTransformer extends (Tree => Tree) {
     def apply(tree: Tree) = {
-      new ReifyAsTransformer(tree.pos).apply(tree)
+      val result = new ReifyAsTransformer(tree.pos).apply(tree)
+      logTree(result, logLevel)
+      result
     }
   }
 

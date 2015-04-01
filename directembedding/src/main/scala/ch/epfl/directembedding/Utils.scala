@@ -16,6 +16,7 @@ trait DirectEmbeddingModule extends MacroModule {
   val dslEndpointMethod: String
   val virtualizationConfig: String
   val liftMethodName: String
+  val logLevel: Int
 }
 
 trait DirectEmbeddingUtils extends MacroModule with TransformationUtils {

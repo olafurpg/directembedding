@@ -6,18 +6,18 @@ import org.scalatest.{ FlatSpec, ShouldMatchers }
 
 class LinearAlgebraSpec extends FlatSpec with ShouldMatchers {
 
-  def testReify(body: Collector => Exp[_]): Seq[Exp[_]] = {
-    implicit val collec: Collector = new CollectClass()
-    intercept[scala.NotImplementedError] {
-      body(collec)
-    }
-    collec.get
+  "linear algebra" should "lift a single matrix" in {
+    la {
+      new Matrix(1, 2)
+    } should be(Matrix(1, 2))
   }
-  "dsl" should "lift free variables in block" in {
-    testReify(implicit collec =>
-      la {
-        true
-      }) should be(List(Const(true)))
+
+  "linear algebra" should "work with matrix multiplication" in {
+    la {
+      val a = new Matrix(1, 2)
+      val b = new Matrix(2, 1)
+      a * b
+    } should be(Matrix(1, 1))
   }
 
 }

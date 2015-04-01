@@ -69,13 +69,26 @@ object ConfigurationExample {
 
 }
 
-trait MatrixExpr extends Exp[Int]
+sealed trait MatrixExpr extends Exp[Int] {
+  def n: Int = this match {
+    case Mult(lhs, rhs)   => lhs.n
+    case MatrixNode(a, _) => a.x
+  }
+  def m: Int = this match {
+    case Mult(lhs, rhs)   => lhs.n
+    case MatrixNode(_, b) => b.x
+  }
+  def eval: Matrix = this match {
+    case Mult(lhs, rhs)       => Matrix(lhs.n, rhs.m)
+    case MatrixNode(lhs, rhs) => Matrix(lhs.x, rhs.x)
+  }
+}
 
 case class Mult(lhs: MatrixExpr, rhs: MatrixExpr) extends MatrixExpr
 case class MatrixNode(N: Const[Int], M: Const[Int]) extends MatrixExpr
 
 @reifyAs(MatrixNode)
-case class Matrix(N: Int, M: Int) extends MatrixExpr {
+case class Matrix(N: Int, M: Int) {
 
   @reifyAs(Mult)
   def *(other: Matrix): Matrix = ???
