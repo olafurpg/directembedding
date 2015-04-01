@@ -69,12 +69,12 @@ object ConfigurationExample {
 
 }
 
-trait MatrixExpr
+trait MatrixExpr extends Exp[Int]
 
 case class Mult(lhs: MatrixExpr, rhs: MatrixExpr) extends MatrixExpr
-//case class MatrixNode[T](N: Int, M: Int) extends MatrixExpr[T]
+case class MatrixNode(N: Const[Int], M: Const[Int]) extends MatrixExpr
 
-@reifyAs(Matrix)
+@reifyAs(MatrixNode)
 case class Matrix(N: Int, M: Int) extends MatrixExpr {
 
   @reifyAs(Mult)
