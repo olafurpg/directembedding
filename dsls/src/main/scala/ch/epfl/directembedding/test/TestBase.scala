@@ -75,8 +75,11 @@ sealed trait MatrixExpr extends Exp[Int] {
     case MatrixNode(a, _) => a.x
   }
   def m: Int = this match {
-    case Mult(lhs, rhs)   => lhs.n
-    case MatrixNode(_, b) => b.x
+    case Mult(lhs, rhs) => lhs.n
+    case MatrixNode(_, b) => {
+      //      throw new Exception(":v")
+      b.x
+    }
   }
   def eval: Matrix = this match {
     case Mult(lhs, rhs)       => Matrix(lhs.n, rhs.m)
