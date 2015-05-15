@@ -163,7 +163,7 @@ trait ReifyAsEmbedding extends DirectEmbeddingModule
           logIndented(s"Select()", indent)
           reify(lhs, tree, Nil, Nil)
 
-        case _: Import =>
+        case _: Import | _: Function =>
           tree
 
         case _ =>

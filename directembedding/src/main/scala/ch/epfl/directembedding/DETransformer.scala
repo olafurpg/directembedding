@@ -12,8 +12,8 @@ object DETransformer {
   def apply[C <: blackbox.Context, T, D <: DslConfig](c: C)(
     _dslName: String,
     _typeMap: Map[c.universe.Type, c.universe.Type],
-    postProcessing: Option[PostProcessing[c.type]],
     preProcessing: Option[PreProcessing[c.type]],
+    postProcessing: Option[PostProcessing[c.type]],
     debug: Boolean = false)(implicit tag: WeakTypeTag[D]): DETransformer[c.type, T] = {
     import c.universe._
 
