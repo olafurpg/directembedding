@@ -15,6 +15,10 @@ trait MacroModule {
 trait DirectEmbeddingModule extends MacroModule {
   import c.universe._
   val dslName: String
+  val failCompilation: Boolean = false
+  val virtualizeFunctions: Boolean = false
+  val virtualizeVal: Boolean = true
+  val embedFunctions: Boolean = false
 
   // We use Strings as keys to resolve aliased types
   val typeMap: Map[String, Type]
@@ -62,9 +66,6 @@ trait DirectEmbeddingUtils extends DirectEmbeddingModule with TransformationUtil
   import c.universe._
 
   def debugLevel: Int = 0
-  val failCompilation: Boolean = false
-  val virtualizeFunctions: Boolean = true
-  val virtualizeVal: Boolean = true
 
   def logTree(t: Tree, level: Int = logLevel) = {
     log(s"$t", level)

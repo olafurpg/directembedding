@@ -9,8 +9,16 @@ import scala.reflect.runtime.universe._
 
 object DETransformer {
 
+  val defaultOptions: Map[String, Boolean] = Map(
+    "virtualizeFunctions" -> true,
+    "embedFunctions" -> false,
+    "embedFunctions" -> false,
+    "virtualizeVal" -> true
+  )
+
   def apply[C <: blackbox.Context, T, D <: DslConfig](c: C)(
     _dslName: String,
+    _options: Map[String, Boolean],
     _typeMap: Map[c.universe.Type, c.universe.Type],
     preProcessing: Option[PreProcessing[c.type]],
     postProcessing: Option[PostProcessing[c.type]],
@@ -19,12 +27,20 @@ object DETransformer {
 
     val configName = tag.tpe.typeSymbol.fullName
     val dslConfig: Tree = c.parse(configName)
+    val options = _options withDefault(defaultOptions)
 
     new DETransformer[c.type, T](c) {
       val postProcessor = postProcessing.getOrElse(new NullPostProcessing[c.type](c))
       val preProcessor = preProcessing.getOrElse(new NullPreProcessing[c.type](c))
+
       val dslName: String = _dslName
       val configPath: Tree = dslConfig
+      // Options
+      override val failCompilation: Boolean = options("failCompilation")
+      override val virtualizeFunctions: Boolean = options("virtualizeFunctions")
+      override val virtualizeVal: Boolean = options("virtualizeVal")
+      override val embedFunctions: Boolean = options("embedFunctions")
+
       override val typeMap: Map[String, Type] = _typeMap.map {
         case (k, v) =>
           (k.typeSymbol.fullName, v)
