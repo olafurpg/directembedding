@@ -34,6 +34,10 @@ trait DirectEmbeddingModule extends MacroModule {
  * Skeleton for Dsl config type
  */
 trait DslConfig {
+  val failCompilation: Boolean = false
+  val virtualizeVal: Boolean = true
+  val virtualizeFunctions: Boolean = true
+  val embedFunctions: Boolean = false
   /**
    * The type which literals get lifted to
    * @tparam T
