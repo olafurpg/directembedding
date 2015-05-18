@@ -13,6 +13,7 @@ object DETransformer {
     _dslName: String,
     options: D,
     _typeMap: Map[c.universe.Type, c.universe.Type],
+    _liftIgnore: Set[c.universe.Type],
     preProcessing: Option[PreProcessing[c.type]],
     postProcessing: Option[PostProcessing[c.type]],
     debug: Boolean = false)(implicit tag: WeakTypeTag[D]): DETransformer[c.type, T] = {
@@ -32,6 +33,8 @@ object DETransformer {
       override val virtualizeFunctions: Boolean = options.virtualizeFunctions
       override val virtualizeVal: Boolean = options.virtualizeVal
       override val embedFunctions: Boolean = options.embedFunctions
+      override val flattenCurriedFunctions: Boolean = options.flattenCurriedFunctions
+      override val liftIgnore: Set[Type] = _liftIgnore
 
       override val typeMap: Map[String, Type] = _typeMap.map {
         case (k, v) =>

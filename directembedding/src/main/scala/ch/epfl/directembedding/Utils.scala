@@ -19,9 +19,11 @@ trait DirectEmbeddingModule extends MacroModule {
   val virtualizeFunctions: Boolean = false
   val virtualizeVal: Boolean = true
   val embedFunctions: Boolean = false
+  val flattenCurriedFunctions: Boolean = true
 
   // We use Strings as keys to resolve aliased types
   val typeMap: Map[String, Type]
+  val liftIgnore: Set[Type]
 
   /**
    * Full name of configuration module
@@ -38,6 +40,8 @@ trait DslConfig {
   val virtualizeVal: Boolean = true
   val virtualizeFunctions: Boolean = true
   val embedFunctions: Boolean = false
+  val flattenCurriedFunctions: Boolean = true
+
   /**
    * The type which literals get lifted to
    * @tparam T

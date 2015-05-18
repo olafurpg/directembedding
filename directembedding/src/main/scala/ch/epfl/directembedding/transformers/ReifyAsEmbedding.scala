@@ -147,7 +147,7 @@ trait ReifyAsEmbedding extends DirectEmbeddingModule
       indent += 2
       val result = tree match {
         // f(a)(b) => f(a, b)
-        case a @ Apply(Apply(_, _), _) =>
+        case a @ Apply(Apply(_, _), _) if flattenCurriedFunctions =>
           logIndented(s"Apply(Apply)", indent)
           transform(uncurry(a, Nil))
 

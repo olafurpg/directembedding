@@ -24,7 +24,8 @@ trait LiftLiteralTransformation extends DirectEmbeddingModule with DirectEmbeddi
       tree match {
         case t @ Literal(Constant(_)) =>
           genApply(List(t))
-        case t @ Ident(_) if toLift.contains(t.symbol) =>
+        case t @ Ident(_) if toLift.contains(t.symbol) && !liftIgnore.exists(ignoreType => tree.tpe.widen <:< ignoreType) =>
+          println(s"TPEEEEEE ${t.tpe.widen.widen}")
           genApply(List(Ident(TermName(t.name.decodedName.toString))))
         // the type associated with the identifier will remain if we don't that
         case t @ Ident(n) =>
