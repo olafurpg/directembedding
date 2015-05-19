@@ -75,6 +75,9 @@ abstract class DETransformer[C <: blackbox.Context, T](val c: C)
         (x => c.untypecheck(x)) andThen
         (x => VirtualizationTransformer(x)._1) andThen
         DSLVirtualizer andThen
+        // TODO: swap order
+        // TODO: strip off sugar from partially applied functions
+        // NO @IGNORE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ReifyAsTransformer andThen
         LiftLiteralTransformer(toLifted) andThen
         EndpointTransformer andThen

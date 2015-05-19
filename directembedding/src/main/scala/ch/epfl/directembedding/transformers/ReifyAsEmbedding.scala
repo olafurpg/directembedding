@@ -30,9 +30,9 @@ trait ReifyAsEmbedding extends DirectEmbeddingModule
     private def reify(body: Tree, targs: List[Tree], args: List[Tree]): Tree = {
       (targs, args) match {
         case (Nil, Nil)    => body
-        case (targs, Nil)  => q"$body.apply[..$targs]"
-        case (Nil, args)   => q"$body.apply(..$args)"
-        case (targs, args) => q"$body.apply[..$targs](..$args)"
+        case (targs, Nil)  => q"$body[..$targs]"
+        case (Nil, args)   => q"$body(..$args)"
+        case (targs, args) => q"$body[..$targs](..$args)"
       }
     }
 
