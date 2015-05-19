@@ -135,7 +135,9 @@ trait ReifyAsEmbedding extends DirectEmbeddingModule
           throw new IllegalArgumentException("Missing argument for reifyAs annotation")
         }
       }.getOrElse {
-        c.abort(tree.pos, s"$treeSymbol on ${selfType(tree).typeSymbol} is not supported in $dslName")
+        println(treeSymbol.annotations)
+        //        c.abort(tree.pos, s"$treeSymbol on ${selfType(tree).typeSymbol} is not supported in $dslName")
+        q"{(x: Any) => $tree}"
       }
     }
 
