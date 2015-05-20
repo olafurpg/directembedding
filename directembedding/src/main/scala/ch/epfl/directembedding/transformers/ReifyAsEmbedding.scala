@@ -118,7 +118,8 @@ trait ReifyAsEmbedding extends DirectEmbeddingModule
       println(showRaw(tree))
       tree match {
         case Block(_, Function(lhs, rhs)) => rhs.collect {
-          case Apply(s: Select, _) => s
+          case Apply(s: Select, _)     => s
+          case TypeApply(s: Select, _) => s
         }.headOption
         case _ => Some(tree)
       }
