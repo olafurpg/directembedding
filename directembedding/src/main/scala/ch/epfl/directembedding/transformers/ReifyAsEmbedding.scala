@@ -114,6 +114,16 @@ trait ReifyAsEmbedding extends DirectEmbeddingModule
         }
       } yield fallbackAnnotation
 
+    private def reificationBody(tree: Tree): Option[Tree] = {
+      println(showRaw(tree))
+      tree match {
+        case Block(_, Function(lhs, rhs)) => rhs.collect {
+          case Apply(s: Select, _) => s
+        }.headOption
+        case _ => Some(tree)
+      }
+    }
+
     /**
      * Get body of class to be reified through [[reifyAs]] annotation.
      *
@@ -131,7 +141,7 @@ trait ReifyAsEmbedding extends DirectEmbeddingModule
         log(s"Missing reifyAs annotation for $treeSymbol")
         fallbackAnnotation(treeSymbol, tree)
       }.map {
-        _.tree.children.tail.headOption.getOrElse {
+        _.tree.children.tail.headOption.flatMap(reificationBody).getOrElse {
           throw new IllegalArgumentException("Missing argument for reifyAs annotation")
         }
       }.getOrElse {
