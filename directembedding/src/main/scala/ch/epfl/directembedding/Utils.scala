@@ -23,6 +23,8 @@ trait DirectEmbeddingModule extends MacroModule {
 
   // We use Strings as keys to resolve aliased types
   val typeMap: Map[String, Type]
+  // To override lift with some custom lift
+  val customLifts: Map[Type, String]
   val liftIgnore: Set[Type]
 
   /**

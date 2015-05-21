@@ -13,6 +13,7 @@ object DETransformer {
     _dslName: String,
     options: D,
     _typeMap: Map[c.universe.Type, c.universe.Type],
+    _customLifts: Map[c.universe.Type, String],
     _liftIgnore: Set[c.universe.Type],
     preProcessing: Option[PreProcessing[c.type]],
     postProcessing: Option[PostProcessing[c.type]],
@@ -35,6 +36,7 @@ object DETransformer {
       override val embedFunctions: Boolean = options.embedFunctions
       override val flattenCurriedFunctions: Boolean = options.flattenCurriedFunctions
       override val liftIgnore: Set[Type] = _liftIgnore
+      override val customLifts: Map[Type, String] = _customLifts
 
       override val typeMap: Map[String, Type] = _typeMap.map {
         case (k, v) =>

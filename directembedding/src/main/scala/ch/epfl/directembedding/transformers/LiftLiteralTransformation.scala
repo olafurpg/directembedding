@@ -24,13 +24,11 @@ trait LiftLiteralTransformation extends DirectEmbeddingModule with DirectEmbeddi
       genApply(t, TermName(name))
 
     def genApplyForType(t: List[Tree], tpe: Type) = {
-      val name = tpe match {
-        case t if t <:< c.typeOf[scala.Int] => "constColumnLift"
-//        case t if t <:< c.typeOf[direct.Query] => "directQueryLift"
-        case _                              => "lift"
-      }
+      val name = customLifts.collect {
+        case (customType, customName) if tpe <:< customType => customName
+      }.headOption.getOrElse("lift")
 
-      genApply(t, name)
+      genApply(t, TermName(name))
     }
 
     override def transform(tree: Tree): Tree = {
@@ -38,8 +36,7 @@ trait LiftLiteralTransformation extends DirectEmbeddingModule with DirectEmbeddi
         case t @ Literal(Constant(_)) =>
           genApplyForType(List(t), tree.tpe)
         case t @ Ident(_) if toLift.contains(t.symbol) && !liftIgnore.exists(ignoreType => tree.tpe.widen <:< ignoreType) =>
-          println(s"TPEEEEEE ${t.tpe.widen.widen}")
-          genApply(List(Ident(TermName(t.name.decodedName.toString))))
+          genApplyForType(List(Ident(TermName(t.name.decodedName.toString))), t.tpe.widen)
         // the type associated with the identifier will remain if we don't that
         case t @ Ident(n) =>
           log("local variable: " + t, logLevel)
